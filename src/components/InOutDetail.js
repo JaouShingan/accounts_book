@@ -1,41 +1,39 @@
 import React, { Component } from "react";
-import {
-    StyleSheet,
-    View,
-    Text,
-    Switch,
-    Button,
-    ToastAndroid
-} from "react-native";
-import KeyBoard from "./KeyBoard";
+import { StyleSheet, View, Text, ToastAndroid } from "react-native";
 import Btn from "./Btn";
+import InputMoney from "./InputMoney";
+import InputRemarks from "./InputRemarks";
 
-export default class AddInOut extends Component {
+export default class InOutDetail extends Component {
+    state = {
+        // 1: 支出 2: 收入
+        inOrOut: 1
+    };
     constructor() {
         super();
-        this.state = {
-            // 1: 支出 2: 收入
-            inOrOut: 1,
-            inputNumber: 0
-        };
         this.switchInOut = this.switchInOut.bind(this);
-        this.getKeyBoardResult = this.getKeyBoardResult.bind(this);
+        this.getMoney = this.getMoney.bind(this);
+        this.getRemarks = this.getRemarks.bind(this);
     }
     switchInOut(inOrOut) {
         this.setState({
             inOrOut: inOrOut
         });
     }
-    getKeyBoardResult(result) {
-        this.setState({
-            inputNumber: result
-        });
+    getMoney(money) {
+        ToastAndroid.show(`> money: ${money}`, ToastAndroid.SHORT);
+    }
+    getRemarks(reamrks) {
+        ToastAndroid.show(`> reamrks: ${reamrks}`, ToastAndroid.SHORT);
     }
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.money}>
-                    <Text style={styles.number}>{this.state.inputNumber}</Text>
+                    <InputMoney
+                        onchangeText={value => this.moneyOnChange(value)}
+                        getMoney={this.getMoney}
+                    />
                 </View>
                 <View style={styles.inout}>
                     <Text
@@ -64,8 +62,11 @@ export default class AddInOut extends Component {
                 <View style={styles.type}>
                     <Btn style={{ flex: 1 }} title="请选择类型" color="#ccc" />
                 </View>
-                <View style={styles.keybord}>
-                    <KeyBoard result={this.getKeyBoardResult} />
+                <View style={styles.mark}>
+                    <InputRemarks
+                        placeholder="请输入备注"
+                        getRemarks={this.getRemarks}
+                    />
                 </View>
                 <View style={styles.operations}>
                     <Btn style={{ flex: 1 }} title="取消" type="default" />
@@ -81,7 +82,8 @@ const styles = StyleSheet.create({
         width: "100%"
     },
     money: {
-        flex: 1
+        flex: 1,
+        minHeight: 40
     },
     number: {
         flex: 1,
@@ -109,8 +111,12 @@ const styles = StyleSheet.create({
     type: {
         flex: 1
     },
-    keybord: {
+    mark: {
         flex: 5
+    },
+    keybord: {
+        // flex: 5
+        opacity: 0
     },
     operations: {
         flex: 1,

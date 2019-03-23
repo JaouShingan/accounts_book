@@ -32,28 +32,32 @@ export default class InOut extends Component {
                     <View style={styles.condition}>
                         <Button
                             title="当日"
-                            color={this.state.dateType !== 1 ? '#ccc' : null}
+                            color={this.state.dateType !== 1 ? "#ccc" : null}
                             onPress={() => this.condition(1)}
                         />
                         <Button
                             title="当月"
-                            color={this.state.dateType !== 2 ? '#ccc' : null}
+                            color={this.state.dateType !== 2 ? "#ccc" : null}
                             onPress={() => this.condition(2)}
                         />
                         <Button
                             title="当季"
-                            color={this.state.dateType !== 3 ? '#ccc' : null}
+                            color={this.state.dateType !== 3 ? "#ccc" : null}
                             onPress={() => this.condition(3)}
                         />
                         <Button
                             title="当年"
-                            color={this.state.dateType !== 4 ? '#ccc' : null}
+                            color={this.state.dateType !== 4 ? "#ccc" : null}
                             onPress={() => this.condition(4)}
                         />
                     </View>
                     <View style={styles.add}>
-                    {/* onPress={() => this.props.navigation.navigate('AddInOut') */}
-                        <Button title="新增" onPress={() => this.props.navigation.navigate('AddInOut')}/>
+                        <Button
+                            title="新增"
+                            onPress={() =>
+                                this.props.navigation.navigate("InOutDetail")
+                            }
+                        />
                     </View>
                 </View>
             </View>
@@ -92,13 +96,13 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: "center"
     },
-    default: { backgroundColor: "#fff", color: "#515a6e"},
+    default: { backgroundColor: "#fff", color: "#515a6e" },
     selected: {
         backgroundColor: "#57a3f3",
         color: "#fff"
     },
     add: {
         flex: 1,
-        justifyContent: 'space-around'
+        justifyContent: "space-around"
     }
 });

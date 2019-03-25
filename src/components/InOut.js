@@ -51,14 +51,14 @@ export default class InOut extends Component {
                             onPress={() => this.condition(4)}
                         />
                     </View>
-                    <View style={styles.add}>
+                    {/* <View style={styles.add}>
                         <Button
                             title="新增"
                             onPress={() =>
                                 this.props.navigation.navigate("InOutDetail")
                             }
                         />
-                    </View>
+                    </View> */}
                 </View>
             </View>
         );

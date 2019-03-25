@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import InOut from "./InOut";
 import FlatItem from "./FlatItem";
+import AddBtn from "./AddBtn";
 export default class Home extends Component {
     static navigationOptions = {
         title: "Home"
@@ -46,11 +47,14 @@ export default class Home extends Component {
             }
         ]
     };
+    addPress() {
+        this.props.navigation.navigate("InOutDetail");
+    }
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.top}>
-                    <InOut navigation={this.props.navigation} />
+                    <InOut/>
                 </View>
                 <View style={styles.bottom}>
                     <FlatList
@@ -59,6 +63,7 @@ export default class Home extends Component {
                         renderItem={({ item }) => <FlatItem data={item} />}
                     />
                 </View>
+                <AddBtn onPress={this.addPress.bind(this)}/>
             </View>
         );
     }

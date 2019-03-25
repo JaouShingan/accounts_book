@@ -14,6 +14,7 @@ export default class InOutDetail extends Component {
         this.switchInOut = this.switchInOut.bind(this);
         this.getMoney = this.getMoney.bind(this);
         this.getRemarks = this.getRemarks.bind(this);
+        this.handle = this.handle.bind(this);
     }
     switchInOut(inOrOut) {
         this.setState({
@@ -25,6 +26,12 @@ export default class InOutDetail extends Component {
     }
     getRemarks(reamrks) {
         ToastAndroid.show(`> reamrks: ${reamrks}`, ToastAndroid.SHORT);
+    }
+    handle(type) {
+        if (type) {
+            
+        }
+        this.props.navigation.navigate("Home");
     }
     render() {
         return (
@@ -69,8 +76,8 @@ export default class InOutDetail extends Component {
                     />
                 </View>
                 <View style={styles.operations}>
-                    <Btn style={{ flex: 1 }} title="取消" type="default" />
-                    <Btn style={{ flex: 1 }} title="确定" type="primary" />
+                    <Btn onPress={() => this.handle(0)} style={{ flex: 1 }} title="取消" type="default" />
+                    <Btn onPress={() => this.handle(1)} style={{ flex: 1 }} title="确定" type="primary" />
                 </View>
             </View>
         );

@@ -1,5 +1,6 @@
 rootProject.name = 'accounts_book'
 include ':react-native-gesture-handler'
 project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-gesture-handler/android')
-
+include ':react-native-sqlite-storage' // add for use sqlite
+project(':react-native-sqlite-storage').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sqlite-storage/src/android') // add for use sqlite
 include ':app'

@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, ToastAndroid } from "react-native";
 import InOut from "./InOut";
 import FlatItem from "./FlatItem";
 import AddBtn from "./AddBtn";
+// import Base from "../storage/base";
+
+// const sqLite = new Base();
+// let db = null;
 export default class Home extends Component {
     static navigationOptions = {
         title: "Home"
@@ -47,6 +51,16 @@ export default class Home extends Component {
             }
         ]
     };
+    componentWillMount() {
+        // ToastAndroid.show("Home componentWillMount", ToastAndroid.SHORT);
+        // if (!db) {
+        //     db = sqLite.open();
+        // }
+    }
+    compennetDidUnmount() {
+        // ToastAndroid.show("Home compennetDidUnmount", ToastAndroid.SHORT);
+        // sqLite.close();
+    }
     addPress() {
         this.props.navigation.navigate("InOutDetail");
     }
@@ -54,7 +68,7 @@ export default class Home extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.top}>
-                    <InOut/>
+                    <InOut />
                 </View>
                 <View style={styles.bottom}>
                     <FlatList
@@ -63,7 +77,7 @@ export default class Home extends Component {
                         renderItem={({ item }) => <FlatItem data={item} />}
                     />
                 </View>
-                <AddBtn onPress={this.addPress.bind(this)}/>
+                <AddBtn onPress={this.addPress.bind(this)} />
             </View>
         );
     }

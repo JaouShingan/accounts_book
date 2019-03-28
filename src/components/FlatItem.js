@@ -16,7 +16,7 @@ export default class FlatItem extends Component {
                     {this.props.data.time}
                 </Text>
                 <Text style={[style.text, style.money]}>
-                    {this.props.data.value}
+                    {this.props.data.money}
                 </Text>
             </View>
         );

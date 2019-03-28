@@ -19,7 +19,8 @@ export default class TypeList extends Component {
     state = {
         type1: [],
         type2: [],
-        selectedType1: {}
+        selectedType1: {},
+        selectedType2: {}
     };
     constructor() {
         super();
@@ -38,11 +39,16 @@ export default class TypeList extends Component {
                 id: item.id,
                 name: item.name
             },
+            selectedType2: {},
             type2: item.sub
         });
     }
     type2Click(item) {
         this.setState({
+            selectedType2: {
+                id: item.id,
+                name: item.name
+            },
             returnType: {
                 id: `${this.state.selectedType1.id}@${item.id}`,
                 name: `${this.state.selectedType1.name}-${item.name}`
@@ -58,16 +64,6 @@ export default class TypeList extends Component {
         this.setState({
             type1: navigation.getParam("inoutType") === 1 ? outType : inType
         });
-
-        // if (this.props.type === 1) {
-        //     this.setState({
-        //         type1: outType
-        //     });
-        // } else {
-        //     this.setState({
-        //         type1: inType
-        //     });
-        // }
     }
     /**
      *
@@ -89,11 +85,18 @@ export default class TypeList extends Component {
                 <View style={[styles.list]}>
                     <View style={styles.l1Area}>
                         <FlatList
+                            extraData={this.state.selectedType1}
                             data={this.state.type1 || []}
                             keyExtractor={keyExtractor}
                             renderItem={({ item, index }) => (
                                 <Text
-                                    style={[styles.text, styles.l1Text]}
+                                    style={[
+                                        styles.text,
+                                        styles.l1Text,
+                                        this.state.selectedType1.id === item.id
+                                            ? styles.clicked
+                                            : {}
+                                    ]}
                                     onPress={() => this.type1Click(item)}
                                 >
                                     {item.name}
@@ -103,11 +106,18 @@ export default class TypeList extends Component {
                     </View>
                     <View style={styles.l2Area}>
                         <FlatList
+                            extraData={this.state.selectedType2}
                             data={this.state.type2 || []}
                             keyExtractor={keyExtractor}
                             renderItem={({ item, index }) => (
                                 <Text
-                                    style={[styles.text, styles.l2Text]}
+                                    style={[
+                                        styles.text,
+                                        styles.l2Text,
+                                        this.state.selectedType2.id === item.id
+                                            ? styles.clicked
+                                            : {}
+                                    ]}
                                     onPress={() => this.type2Click(item)}
                                 >
                                     {item.name}
@@ -170,5 +180,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#ccc",
         borderBottomWidth: 1,
         borderBottomColor: "#fff"
+    },
+    clicked: {
+        backgroundColor: "lightblue"
     }
 });

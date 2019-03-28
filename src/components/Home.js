@@ -19,7 +19,7 @@ export default class Home extends Component {
                 inout: "1",
                 type: "1@1",
                 time: "8:06",
-                value: 6.5,
+                money: 6.5,
                 remarks: "this is remarks"
             },
             {
@@ -28,7 +28,7 @@ export default class Home extends Component {
                 inout: "1",
                 type: "1@2",
                 time: "12:06",
-                value: 14.5,
+                money: 14.5,
                 remarks: "this is remarks"
             },
             {
@@ -37,7 +37,7 @@ export default class Home extends Component {
                 inout: "1",
                 type: "1@3",
                 time: "19:06",
-                value: 18.5,
+                money: 18.5,
                 remarks: "this is remarks"
             },
             {
@@ -46,7 +46,7 @@ export default class Home extends Component {
                 inout: "2",
                 type: "1@3",
                 time: "16:06",
-                value: 100,
+                money: 100,
                 remarks: "this is remarks"
             }
         ]

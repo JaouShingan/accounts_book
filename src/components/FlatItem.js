@@ -3,8 +3,8 @@ import { StyleSheet, View, Text } from "react-native";
 
 export default class FlatItem extends Component {
     INOUT = {
-        1: "收入",
-        2: "支出"
+        1: "支出",
+        2: "收入"
     };
     render() {
         return (
@@ -13,7 +13,7 @@ export default class FlatItem extends Component {
                     {this.INOUT[this.props.data.inout]}
                 </Text>
                 <Text style={[style.text, style.time]}>
-                    {this.props.data.time}
+                {this.props.data.date}{`\n`}{this.props.data.time}
                 </Text>
                 <Text style={[style.text, style.money]}>
                     {this.props.data.money}
@@ -43,7 +43,7 @@ const style = StyleSheet.create({
         flex: 1
     },
     time: {
-        flex: 1
+        flex: 2
     },
     money: {
         flex: 2,

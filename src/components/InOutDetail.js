@@ -11,6 +11,7 @@ import Btn from "./Btn";
 import InputMoney from "./InputMoney";
 import InputRemarks from "./InputRemarks";
 import { NavigationEvents } from "react-navigation";
+import Storage from "../storage";
 
 export default class InOutDetail extends Component {
     state = {
@@ -38,6 +39,13 @@ export default class InOutDetail extends Component {
                 typeName: returnType.name,
                 typeId: returnType.id
             });
+        }
+        const isAdd = this.props.navigation.getParam("isAdd") || true;
+        if (isAdd) {
+            this.setState({
+                date: '2019-04-08',
+                time: `${new Date().getHours()}:${new Date().getMinutes()}`
+            })
         }
     }
     switchInOut(inOrOut) {
@@ -77,7 +85,8 @@ export default class InOutDetail extends Component {
     openTime() {
         TimePickerAndroid.open({
             // is24Hour (boolean) - 如果设为true，则选择器会使用 24 小时制。如果设为false，则会额外显示 AM/PM 的选项。如果不设定，则采取当前地区的默认设置。
-            is24Hour: true
+            is24Hour: true,
+            mode: "spinner"
         })
             .then(({ action, hour, minute }) => {
                 if (action !== TimePickerAndroid.dismissedAction) {
@@ -102,11 +111,20 @@ export default class InOutDetail extends Component {
             result = {
                 money: this.state.money,
                 inout: this.state.inOrOut,
-                date: this.state.date,
+                date: new Date(this.state.date).getTime(),
                 time: this.state.time,
                 type: this.state.typeId,
-                reamrks: this.state.reamrks,
-            }
+                reamrks: this.state.reamrks
+            };
+
+            // const create = Storage.createTableAccounts();
+            // ToastAndroid.show(`create :${JSON.stringify(create)}`, ToastAndroid.LONG);
+            Storage.insertAccounts(result).then((r) => {
+                ToastAndroid.show(`insert s:${JSON.stringify(r)}`, ToastAndroid.LONG);
+            }).catch((err)=> {
+                ToastAndroid.show(`insert e:${JSON.stringify(err.message)}`, ToastAndroid.LONG);
+            })
+            // ToastAndroid.show(`select :${JSON.stringify(select)}`, ToastAndroid.LONG);
         }
         this.props.navigation.navigate("Home", {
             inOutDetail: result
@@ -147,7 +165,7 @@ export default class InOutDetail extends Component {
                     </Text>
                 </View>
                 <View style={[styles.item]}>
-                    <Text style={[styles.itemLabel]}>日期</Text>
+                    <Text style={[styles.itemLabel]}> 日期 </Text>
                     <Btn
                         style={[styles.itemOper]}
                         title={this.state.date || "请选择日期"}
@@ -156,7 +174,7 @@ export default class InOutDetail extends Component {
                     />
                 </View>
                 <View style={[styles.item]}>
-                    <Text style={[styles.itemLabel]}>时间</Text>
+                    <Text style={[styles.itemLabel]}> 时间 </Text>
                     <Btn
                         style={[styles.itemOper]}
                         title={this.state.time || "请选择时间"}
@@ -165,7 +183,7 @@ export default class InOutDetail extends Component {
                     />
                 </View>
                 <View style={styles.item}>
-                    <Text style={[styles.itemLabel]}>收支类型</Text>
+                    <Text style={[styles.itemLabel]}> 收支类型 </Text>
                     <Btn
                         style={[styles.itemOper]}
                         title={this.state.typeName || "请选择类型"}
@@ -182,13 +200,17 @@ export default class InOutDetail extends Component {
                 <View style={styles.operations}>
                     <Btn
                         onPress={() => this.handle(0)}
-                        style={{ flex: 1 }}
+                        style={{
+                            flex: 1
+                        }}
                         title="取消"
                         type="default"
                     />
                     <Btn
                         onPress={() => this.handle(1)}
-                        style={{ flex: 1 }}
+                        style={{
+                            flex: 1
+                        }}
                         title="确定"
                         type="primary"
                     />

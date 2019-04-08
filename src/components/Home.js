@@ -3,75 +3,84 @@ import { StyleSheet, Text, View, FlatList, ToastAndroid } from "react-native";
 import InOut from "./InOut";
 import FlatItem from "./FlatItem";
 import AddBtn from "./AddBtn";
-// import Base from "../storage/base";
+import Storage from "../storage";
+import utils from "../utils";
 
-// const sqLite = new Base();
-// let db = null;
 export default class Home extends Component {
     static navigationOptions = {
         title: "Home"
     };
     state = {
-        list: [
-            {
-                day: "20190322",
-                key: 1,
-                inout: "1",
-                type: "1@1",
-                time: "8:06",
-                money: 6.5,
-                remarks: "this is remarks"
-            },
-            {
-                day: "20190322",
-                key: 2,
-                inout: "1",
-                type: "1@2",
-                time: "12:06",
-                money: 14.5,
-                remarks: "this is remarks"
-            },
-            {
-                day: "20190322",
-                key: 3,
-                inout: "1",
-                type: "1@3",
-                time: "19:06",
-                money: 18.5,
-                remarks: "this is remarks"
-            },
-            {
-                day: "20190322",
-                key: 4,
-                inout: "2",
-                type: "1@3",
-                time: "16:06",
-                money: 100,
-                remarks: "this is remarks"
-            }
-        ]
+        in: 0,
+        out: 0,
+        list: []
     };
-    componentWillMount() {
-        // ToastAndroid.show("Home componentWillMount", ToastAndroid.SHORT);
-        // if (!db) {
-        //     db = sqLite.open();
-        // }
+
+    componentDidMount() {
+        Storage.createTableAccounts().then(() => {}).finally(() => {
+            // Storage.close();
+        });
+        // Storage.clearTableAccounts().then((r) => {
+        //     ToastAndroid.show(`${JSON.stringify(r)}`, ToastAndroid.LONG);
+        // }).catch(e => {
+        //     ToastAndroid.show(`${JSON.stringify(e)}`, ToastAndroid.LONG);
+        // })
+        this.getList(utils.currentDay());
     }
-    compennetDidUnmount() {
-        // ToastAndroid.show("Home compennetDidUnmount", ToastAndroid.SHORT);
-        // sqLite.close();
-    }
+    componentWillMount() {}
+    compennetDidUnmount() {}
     addPress() {
         this.props.navigation.navigate("InOutDetail");
+    }
+    getList(date) {
+        Storage.selectAccounts(date)
+            .then(result => {
+                const { rows } = result.resultSet;
+                const temp = [];
+                let tempIn = 0;
+                let tempOut = 0;
+                for (let i = 0; i < rows.length; i++) {
+                    const t = rows.item(i);
+                    t.date = utils.formatDate(t.date);
+                    temp.push(t);
+                    if (t.inout === 1) {
+                        tempOut = tempOut + t.money;
+                    } else {
+                        tempIn = tempIn + t.money;
+                    }
+                    ToastAndroid.show(
+                        `${typeof t.money}\n${typeof t.inout}`,
+                        ToastAndroid.SHORT
+                    );
+                }
+                // ToastAndroid.show(`result date: ${new Date(result.date)}, \n curre n t   : ${new Date()},\n templength: ${temp.length}`, ToastAndroid.LONG);
+                // ToastAndroid.show(`temp: ${JSON.stringify(temp)}`, ToastAndroid.SHORT);
+                this.setState({
+                    in: tempIn,
+                    out: tempOut,
+                    list: temp
+                });
+            })
+            .catch((err, d) => {
+                // ToastAndroid.show(`err: ${JSON.stringify(err)}, ${d}`, ToastAndroid.LONG);
+            })
+            .finally(() => {
+                // Storage.close();
+            });
+    }
+    onRefresh() {
+        this.getList(utils.currentDay());
     }
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.top}>
-                    <InOut />
+                    <InOut in={this.state.in} out={this.state.out} />
                 </View>
                 <View style={styles.bottom}>
                     <FlatList
+                        refreshing={false}
+                        onRefresh={this.onRefresh.bind(this)}
                         data={this.state.list}
                         keyExtractor={(item, index) => index + ""}
                         renderItem={({ item }) => <FlatItem data={item} />}

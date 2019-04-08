@@ -21,11 +21,11 @@ export default class InOut extends Component {
                 <View style={styles.top}>
                     <View style={styles.item}>
                         <Text style={styles.label}>收入</Text>
-                        <Text style={styles.value}>1000.00</Text>
+                        <Text style={styles.value}>{this.props.in || 0}</Text>
                     </View>
                     <View style={styles.item}>
                         <Text style={styles.label}>支出</Text>
-                        <Text style={styles.value}>2000.00</Text>
+                        <Text style={styles.value}>{this.props.out || 0}</Text>
                     </View>
                 </View>
                 <View style={styles.bottom}>
